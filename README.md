@@ -8,6 +8,8 @@ We also refer you to the [cometExactTest R package](http://cran.r-project.org/we
 
 ## Requirements ##
 
+CoMEt runs under Python 2 and 3.
+
 CoMEt requires the following Python modules. For each module, the latest version tested with CoMEt is given in parantheses:
 
 1. [NetworkX](https://networkx.github.io/) (1.9.1)
@@ -15,6 +17,7 @@ CoMEt requires the following Python modules. For each module, the latest version
 3. [NumPy](http://www.numpy.org/) (1.10).
 4. [matplotlib](http://matplotlib.org/) (1.4.2).
 5. [Multi-Dendrix](http://github.com/raphael-group/multi-dendrix) [optional].
+6. [six](https://pypi.python.org/pypi/six) (1.10.0, likely installed as a dependency of other packages above).
 
 CoMEt requires [Bower](http://bower.io/) to create web output.
 
