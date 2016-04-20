@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 """Compiles the C and Fortran modules used by CoMEt."""
 

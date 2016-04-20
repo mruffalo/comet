@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 # Load required modules
 import sys, os, json, re, time, comet as C
@@ -99,7 +99,6 @@ def get_parser():
 
 
     return parser
-
 
 
 def comet(mutations, n, t, ks, numIters, stepLen, initialSoln,

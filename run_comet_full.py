@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 # Load required modules
 import sys, os, json, re, time, comet as C, multiprocessing as mp, random

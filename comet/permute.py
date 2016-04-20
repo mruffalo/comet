@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 # Import globally required modules
 import sys, random, numpy as np, scipy as sp, scipy.sparse
