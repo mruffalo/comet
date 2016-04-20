@@ -1,17 +1,17 @@
 #!/usr/bin/env python
 
 # Import items from local modules
-from mutation_data import *
-from convergence import *
-from constants import *
-from permute import *
-from utils import *
-from output import *
+from .mutation_data import *
+from .convergence import *
+from .constants import *
+from .permute import *
+from .utils import *
+from .output import *
 
 
 # There is a scipy stats function called binom_test, so we need to import
 # the CoMET C modules last
-from cComet import *
+from .cComet import *
 
 # Permutation test, conditioning on the frequency of each mutation
 def py_permutation_test(k, N, tbl, num_permutations):
