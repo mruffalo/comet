@@ -68,9 +68,8 @@ def load_mutation_data(filename, patientFile=None, geneFile=None, minFreq=0, sub
                 for gene in mutations:
                     geneToCases[gene].add(patient)
 
-    genes = geneToCases.keys()
     # Remove genes with fewer than min_freq mutations
-    toRemove = [ g for g in genes if len(geneToCases[g]) < minFreq ]
+    toRemove = [ g for g in geneToCases if len(geneToCases[g]) < minFreq ]
     for g in toRemove:
         for p in geneToCases[g]:
             patientToGenes[p].remove(g)
