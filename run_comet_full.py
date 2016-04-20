@@ -27,7 +27,7 @@ def get_parser():
                         help='File of patients to be included (optional).')
     parser.add_argument('-gf', '--gene_file', default=None,
                         help='File of genes to be included (optional).')
-    
+
     # Comet
     parser.add_argument('-ks', '--gene_set_sizes', nargs="*", type=int, required=True,
                         help='Gene set sizes (length must be t). This or -k must be set. ')
@@ -43,7 +43,7 @@ def get_parser():
                         help='Number of different initial starts to use with MCMC.')
     parser.add_argument('-tv', '--total_distance_cutoff', type=float, default=0.005,
                         help='stop condition of convergence (total distance).')
-    
+
     # Parameters for determining the test to be applied in CoMEt
     parser.add_argument('--exact_cut', default=0.001, type=float,
                         help='Maximum accumulated table prob. to stop exact test.')
@@ -51,13 +51,13 @@ def get_parser():
                         help='Minumum pval cutoff for CoMEt to perform binom test.')
     parser.add_argument('-nt', '--nt', default=10, type=int,
                         help='Maximum co-occurrence cufoff to perform exact test.')
-    
+
     # Files for subtypes/core-events run
     parser.add_argument('-sub', '--subtype', default=None,
                         help='File with a list of subtype for performing subtype-comet.')
     parser.add_argument('-ce', '--core_events', default=None,
                         help='File with a list of core events for performing subtype-comet.')
-    
+
     # Hidden parameters: users can still use these parameters but they won't show in the options    
     # Parameters for marginal probability graph (optional)
     # File mapping genes/events to new names (optional).
@@ -76,7 +76,7 @@ def get_parser():
     # Maximum standard error cutoff to consider a line
     parser.add_argument('-rmse', '--standard_error_cutoff', default=0.01, type=float,
                             help=argparse.SUPPRESS) 
-    
+
     # Input file with lists of pre-run results.
     parser.add_argument('--precomputed_scores', default=None, help=argparse.SUPPRESS)
     # Accelerating factor for target weight
@@ -93,7 +93,7 @@ def get_parser():
     # Keep temp files (CoMEt results and permuted matrices).
     parser.add_argument('--keep_temp_files', required=False, action='store_true', default=False,
                         help=argparse.SUPPRESS)
-  
+
     return parser
 
 def runComet(cometArgs):
@@ -108,11 +108,11 @@ def run( args ):
     for i, arg in enumerate(sys.argv[1:]):
         if arg not in permuteFlags and sys.argv[i] not in permuteFlags:
             realCometArgs.append( arg )
-    
+
     realCometArgs += [ "-o", realOutputDir, "--noviz"]
-	# perform simple run without viz first.
+    # perform simple run without viz first.
     results = runComet(realCometArgs)
-    
+
     # Load mutation data using Multi-Dendrix and output as a temporary file
     realMutations = C.load_mutation_data(args.mutation_matrix, args.patient_file,
                                      args.gene_file, args.min_freq, args.subtype)
@@ -177,12 +177,12 @@ def run( args ):
     # Find the maximum test statistic on the permuted datasets
     from itertools import islice
     maxStat = 0
-    
+
     for rf in [ rf for rf in os.listdir(directory) if rf.startswith("comet-results-on-permutation") ]:
-        for df in [df for df in os.listdir("{}/{}/results".format(directory, rf)  ) if df.endswith(".tsv")]:            
+        for df in [df for df in os.listdir("{}/{}/results".format(directory, rf)  ) if df.endswith(".tsv")]:
             with open("{}/{}/results/{}".format(directory, rf, df)) as infile:
                 for line in islice(infile, 1, 2):
-                    score = float(line.split("\t")[1])        
+                    score = float(line.split("\t")[1])
                     if score > maxStat:
                         maxStat = score
 
@@ -192,14 +192,14 @@ def run( args ):
 
     # Prepare comet results on real, mutation data, and output directory for viz
     for rf in [rf for rf in os.listdir( "{}/results/".format(realOutputDir) ) if rf.endswith(".tsv")]:
-        resultsTable = [l.rstrip() for l in open( "{}/results/{}".format(realOutputDir, rf))]    
+        resultsTable = [l.rstrip() for l in open( "{}/results/{}".format(realOutputDir, rf))]
 
     realMutations = (m, n, genes, patients, geneToCases, patientToGenes )
     outputDirViz = realOutputDir + "/viz/"
     C.ensure_dir(outputDirViz)
 
     # Perform visualization
-    C.output_comet_viz(RC.get_parser().parse_args(realCometArgs), realMutations, \
+    C.output_comet_viz(RC.get_parser().parse_args(realCometArgs), realMutations,
         resultsTable, maxStat, args.num_permutations)
 
     # Destroy the temporary directory if necessary
