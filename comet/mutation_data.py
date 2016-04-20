@@ -75,6 +75,9 @@ def load_mutation_data(filename, patientFile=None, geneFile=None, minFreq=0, sub
         for p in geneToCases[g]:
             patientToGenes[p].remove(g)
         del geneToCases[g]
+        # The following line doesn't seem to do anything useful. 'genes' is recreated
+        # after this loop, and isn't checked inside this loop, so this just looks like
+        # a quadratic-runtime waste of CPU.
         genes.remove(g)
 
     # Format and return output
