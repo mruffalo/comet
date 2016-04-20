@@ -30,7 +30,7 @@ def get_parser():
                         help='Gene set size.')
     parser.add_argument('-w', '--weight_func', default='exact',
                         help='Weight function to use.',
-                        choices=C.weightFunctionChars.keys())
+                        choices=list(C.weightFunctionChars.keys()))
     return parser
 
 
@@ -48,12 +48,12 @@ def run( args ):
     mutations = C.load_mutation_data(mutationMatrix, patientFile, geneFile, minFreq)
     m, n = mutations[0], mutations[1]
     if args.verbose:
-        print '- Mutation data: %s genes x %s patients' % (m, n)
+        print('- Mutation data: %s genes x %s patients' % (m, n))
 
     # Set up the CoMEt run and then run exhaustively
     cMutations = C.convert_mutations_to_C_format(*mutations)
     iPatientToGenes, iGeneToCases, geneToNumCases, geneToIndex, indexToGene = cMutations
-    genes = sorted(geneToIndex.keys(), key=lambda g: geneToIndex[g])
+    genes = sorted(list(geneToIndex.keys()), key=lambda g: geneToIndex[g])
 
     C.precompute_factorials(max(m, n))
     C.set_weight(C.weightFunctionChars[wf])
@@ -62,7 +62,7 @@ def run( args ):
 
     # Parse the output
     solns, weights, tables, probs = results
-    res = zip(solns, weights, tables, probs)
+    res = list(zip(solns, weights, tables, probs))
     res.sort(key=lambda arr: arr[1], reverse=True) # sort by weight decreasing
     solns   = [ sorted([genes[g] for g in geneset]) for geneset, w, t, p in res]
     weights = [ w for g, w, t, p in res]
@@ -76,6 +76,6 @@ def run( args ):
         output.insert(0, "#Gene set\tP-value\tFreq\tWeight")
         outfile.write( "\n".join(output) )
 
-    return zip(solns, probs, weights)
+    return list(zip(solns, probs, weights))
 
 if __name__ == "__main__": run( get_parser().parse_args(sys.argv[1:]) )    

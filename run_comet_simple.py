@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 
 # Load required modules
 import sys, os, json, re, time, comet as C
@@ -168,7 +169,7 @@ def run( args ):
     hybridCutoff = args.binom_cut
     NInc = 1.5                 # increamental for non-converged chain    
 
-	# Load the mutation data
+    # Load the mutation data
     mutations = C.load_mutation_data(mutationMatrix, patientFile, geneFile, minFreq, subtypeFile)
     m, n, genes, patients, geneToCases, patientToGenes, subtypes = mutations
     mutations = ( m, n, genes, patients, geneToCases, patientToGenes )
@@ -176,7 +177,7 @@ def run( args ):
 
     ###########################################################################
     if args.verbose:
-        print 'Mutation data: %s genes x %s patients' % (m, n)
+        print('Mutation data: %s genes x %s patients' % (m, n))
 
     if args.core_events:
         with open(args.core_events) as f:
@@ -209,7 +210,7 @@ def run( args ):
                 lastSolns.append(lastSoln)
 
             finalTv = C.discrete_convergence(totalOut, int(N/s))
-            print finalTv, N
+            print(finalTv, N)
 
             newN = int(N*NInc)
             if newN > NStop or finalTv < args.total_distance_cutoff:
@@ -231,7 +232,7 @@ def run( args ):
     C.free_factorials()
 
     # Output comet results to TSV and website
-    collections = sorted(results.keys(), key=lambda S: results[S]["total_weight"], reverse=True)
+    collections = sorted(results, key=lambda S: results[S]["total_weight"], reverse=True)
     C.output_comet(args, mutations, results, collections, ks, N*(runNum), 0, 0)
     
     return [ (S, results[S]["freq"], results[S]["total_weight"]) for S in collections ]
