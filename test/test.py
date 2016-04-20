@@ -1,4 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+from __future__ import print_function
 
 """Test the current version of CoMEt against previous output
    we've shown to be correct."""
@@ -40,4 +41,4 @@ if __name__ == "__main__":
 	# Don't test the MCMC due to different PRNGs used by different Python versions
 	# assert(json.dumps(mcmcResults) == json.dumps(trueMCMC))
 
-	print "PASS"
+	print("PASS")

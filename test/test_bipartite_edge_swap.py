@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from __future__ import print_function
 
 import networkx as nx, sys, os, time, random, numpy as np
 sys.path.append("../comet/")
@@ -9,11 +10,11 @@ import permute as P
 
 def check_degrees(G, H):
     if len(set(G.nodes()) ^ set(H.nodes())) != 0:
-        print set(G.nodes()) - set(H.nodes())
-        print set(H.nodes()) - set(G.nodes())
+        print(set(G.nodes()) - set(H.nodes()))
+        print(set(H.nodes()) - set(G.nodes()))
     for i, n in enumerate(G.nodes()):
         if H.degree(n) != G.degree(n):
-            print i, n, H.degree(n), G.degree(n)
+            print(i, n, H.degree(n), G.degree(n))
             return False
     return True
 
@@ -51,12 +52,12 @@ if __name__ == "__main__":
         # Create a test graph
         numXs, numYs, numEdges = 400, 400, 20000
         xs, ys, G = test_random_bipartite_graph(numXs, numYs, numEdges)
-        print "Test {}: {} genes x {} samples, {} mutations".format(i+1, len(xs), len(ys), numEdges)
+        print("Test {}: {} genes x {} samples, {} mutations".format(i+1, len(xs), len(ys), numEdges))
         
         # Run and time in Fortran
         start = time.time()
         H = call_bipartite_edge_swap( G, xs, ys, Q=Q )
-        print "\tFortran:", time.time() - start, 'secs'
+        print("\tFortran:", time.time() - start, 'secs')
         worked = check_degrees(G, H)
         if not worked:
             raise ValueError("Degrees in permuted graph are different than original graph.")
@@ -64,10 +65,10 @@ if __name__ == "__main__":
         # Run and time in Python
         start = time.time()
         H = P.bipartite_double_edge_swap( G, xs, ys, nswap=numEdges * Q)
-        print "\tPython:", time.time() - start, 'secs'
+        print("\tPython:", time.time() - start, 'secs')
         worked = check_degrees(G, H)
         if not worked:
             raise ValueError("Degrees in permuted graph are different than original graph.")
 
-        print 'PASS'
+        print('PASS')
 
