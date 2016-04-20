@@ -15,7 +15,7 @@ except ImportError:
 # Try to import the Fortran double edge swap, otherwise
 # import the Python version
 try:
-		from permute_matrix import bipartite_edge_swap
+		from .permute_matrix import bipartite_edge_swap
 		fortranBindings = True
 except ImportError:
 		fortranBindings = False
