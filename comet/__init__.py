@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import division, print_function, unicode_literals
 
 # Import items from local modules
 from .mutation_data import *
@@ -28,12 +29,12 @@ def py_permutation_test(k, N, tbl, num_permutations):
 
     # Create the permuted datasets and compute the significance
     obs = T(M)
-    more_extreme_count = 0.
+    more_extreme_count = 0
     for _ in range(num_permutations):
         for i in range(k): np.random.shuffle(M[i])
-        if T(M) >= obs: more_extreme_count += 1.
+        if T(M) >= obs: more_extreme_count += 1
 
-    return more_extreme_count/num_permutations
+    return more_extreme_count / num_permutations
 
 def phi(k, N, tbl, exact_pvalthresh=0.001, binom_pvalthresh=0.005,
         co_cutoff=10, num_permutations=1000):
@@ -66,4 +67,3 @@ def phi(k, N, tbl, exact_pvalthresh=0.001, binom_pvalthresh=0.005,
                 return binom_pval, BINOM
             else:
                 return permutation_pval, PERMUTATIONAL
-

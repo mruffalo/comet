@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 
 # Import globally required modules
 import sys, random, numpy as np, scipy as sp, scipy.sparse
@@ -6,9 +7,9 @@ try:
 		import networkx as nx
 		from networkx.algorithms.bipartite import biadjacency_matrix
 except ImportError:
-	print 'Error!'
-	print '\tCould not import NetworkX (http://networkx.github.com).'
-	print '\tMake sure NetworkX is in your path.'
+	print('Error!')
+	print('\tCould not import NetworkX (http://networkx.github.com).')
+	print('\tMake sure NetworkX is in your path.')
 	sys.exit(1)
 
 # Try to import the Fortran double edge swap, otherwise
@@ -96,7 +97,7 @@ def permute_mutation_data(G, genes, patients, seed, Q=100):
 		# Compute the desired pieces of the graph structure
 		A = biadjacency_matrix(G, row_order=genes, column_order=patients, dtype=np.int32)
 		if sp.sparse.issparse(A):
-		    A = A.todense()
+			A = A.todense()
 		A = np.asarray(A, dtype=np.int32)
 
 		# Set up and call the permute matrix function
