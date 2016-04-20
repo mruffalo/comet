@@ -33,12 +33,20 @@ PyObject *free_factorials(PyObject *self, PyObject *args) {
 	return Py_BuildValue(""); // returns NULL
 }
 
-
 PyObject *py_set_weight(PyObject *self, PyObject *args) {
+#if PY_MAJOR_VERSION >= 3
+    int weight_function_int;
+    char weight_function_char;
+    if (! PyArg_ParseTuple( args, "C", &weight_function_int)) {
+        return NULL;
+    }
+    weight_function_char = (char)weight_function_int;
+#else
     char weight_function_char;
     if (! PyArg_ParseTuple( args, "c", &weight_function_char)) {
         return NULL;
     }
+#endif
     weight_func_c =  weight_function_char;
     return Py_BuildValue("");
 }
@@ -370,8 +378,11 @@ PyMethodDef CoMEtMethods[] = {
     {NULL, NULL, 0, NULL},
 };
 
-PyMODINIT_FUNC initcComet(void) {
-    PyObject *m = Py_InitModule("cComet", CoMEtMethods);
+MOD_INIT(cComet) {
+    PyObject *m;
+    MOD_DEF(m, "cComet", "", CoMEtMethods);
+
+    //PyObject *m = Py_InitModule("cComet", CoMEtMethods);
     if (m == NULL) {
         return;
     }
