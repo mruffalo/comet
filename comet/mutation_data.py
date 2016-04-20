@@ -99,8 +99,8 @@ def convert_mutations_to_C_format(m, n, genes, patients, geneToCases, patientToG
             genes.append(s)
         #genes += subtypes
 
-    geneToIndex = dict(list(zip(genes, list(range(m)))))
-    indexToGene = dict(list(zip(list(range(m)), genes)))
+    geneToIndex = dict(zip(genes, range(m)))
+    indexToGene = dict(zip(range(m), genes))
     iPatientToGenes = adj_dict_to_lists(patients, genes, patientToGenes)
     iGeneToCases = adj_dict_to_lists(genes, patients, geneToCases)
     geneToNumCases = [ len(geneToCases[g]) for g in genes ]
