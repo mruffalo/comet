@@ -36,7 +36,7 @@ if __name__ == "__main__":
 		os.unlink("tmp-k3-exact-exhaustive.tsv")
 
 	# Check the results
-	assert(json.dumps(exhaustResults) == json.dumps(trueExhaustive))
+	assert(json.dumps(sorted(exhaustResults), sort_keys=True) == json.dumps(sorted(trueExhaustive), sort_keys=True))
 
 	# Don't test the MCMC due to different PRNGs used by different Python versions
 	# assert(json.dumps(mcmcResults) == json.dumps(trueMCMC))
