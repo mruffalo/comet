@@ -4,8 +4,8 @@ from __future__ import print_function
 # Import globally required modules
 import sys, random, numpy as np, scipy as sp, scipy.sparse
 try:
-		import networkx as nx
-		from networkx.algorithms.bipartite import biadjacency_matrix
+	import networkx as nx
+	from networkx.algorithms.bipartite import biadjacency_matrix
 except ImportError:
 	print('Error!')
 	print('\tCould not import NetworkX (http://networkx.github.com).')
@@ -36,7 +36,7 @@ def bipartite_double_edge_swap(G, genes, patients, nswap=1, max_tries=1e75):
 	# probability weighted by degree.
 	n=0
 	swapcount=0
-	keys,degrees=zip(*G.degree().items()) # keys, degree
+	keys,degrees=list(zip(*list(G.degree().items()))) # keys, degree
 	cdf=nx.utils.cumulative_distribution(degrees)  # cdf of degree
 	while swapcount < nswap:
 		# pick two random edges without creating edge list
@@ -73,7 +73,7 @@ def bipartite_double_edge_swap(G, genes, patients, nswap=1, max_tries=1e75):
 	return G
 
 def construct_mutation_graph(geneToCases, patientToGenes):
-	genes, patients = geneToCases.keys(), patientToGenes.keys()
+	genes, patients = list(geneToCases), list(patientToGenes)
 	nodes = genes + patients
 	edges = [ (gene, patient) for gene in genes for patient in geneToCases[gene] ]
 	G = nx.Graph()
@@ -88,7 +88,7 @@ def graph_to_mutation_data(H, genes, patients):
 		patientToGenes[patient] = set( mutations )
 		for g in mutations: geneToCases[g].add( patient )
 
-	genes, patients = geneToCases.keys(), patientToGenes.keys()
+	genes, patients = list(geneToCases), list(patientToGenes)
 	m, n = len(genes), len(patients)
 	return m, n, genes, patients, geneToCases, patientToGenes
 

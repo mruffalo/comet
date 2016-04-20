@@ -1,11 +1,12 @@
 # output comet results and website
-from __future__ import print_function
+from __future__ import division, print_function
 
 import sys, os, json, math, argparse, time, networkx as nx, tempfile
 from collections import defaultdict
 import numpy as np
 from itertools import combinations as combos
 from math import factorial
+import six
 
 def ensure_dir(path):
 	try: 
@@ -295,10 +296,10 @@ def gd3_mutation_data(m, n, genes, patients, geneToCases, patientToGenes,
 	# Sample information (TODO: More elegant solution later)
 	if sampleToType:
 		typeToSamples = dict( (t, set()) for t in set(sampleToType.values()))
-		for sample, ty in sampleToType.iteritems():
+		for sample, ty in six.iteritems(sampleToType):
 			if sample in patients:
 				typeToSamples[ty].add( sample )
-		typeToSamples = dict( (t, list(s)) for t, s in typeToSamples.iteritems() )
+		typeToSamples = dict( (t, list(s)) for t, s in six.iteritems(typeToSamples) )
 		sampleToTypes = sampleToType
 	else:
 		typeToSamples = dict(Cancer=patients)
@@ -372,7 +373,7 @@ def construct_mp_graph(resultsTable, eventNames, minSamplingFreq, maxPWeight):
 					edges[frozenset([g1, g2])] += freq/N
 
 	# Create a graph from the edge list
-	mpgEdges = [ (list(S)[0], list(S)[1], dict(weight=w)) for S, w in edges.iteritems()  ]
+	mpgEdges = [ (list(S)[0], list(S)[1], dict(weight=w)) for S, w in six.iteritems(edges) ]
 	MPG = nx.Graph()
 	MPG.add_edges_from(mpgEdges)
 
@@ -388,7 +389,4 @@ def extract_relevant_edges(edges, minEdgeWeight):
 	for u, v, d in edges:
 		weightToEdges[d['weight']].append( (u, v) )
 
-	return sorted(weightToEdges.keys(), reverse=True), weightToEdges
-
-
-
+	return sorted(weightToEdges, reverse=True), weightToEdges

@@ -1,4 +1,4 @@
-from __future__ import print_function
+from __future__ import division, print_function
 
 import math
 import numpy as np
@@ -58,7 +58,7 @@ def discrete_convergence_eqb_plot(filelist, num_genes, ks_set, outprefix):
         union_p = list()
         union_p_w = list()
 
-        for f in klets_seq.keys():
+        for f in klets_seq:
             #sum_f[f] -= klets_seq[f][i - last_eqb]['W']
             #sum_f[f] += klets_seq[f][i]['W']
             dict_f[f] = dict()
@@ -77,20 +77,20 @@ def discrete_convergence_eqb_plot(filelist, num_genes, ks_set, outprefix):
                 union_f[klets_seq[f][j]['G']] += 1
                 #union_w[klets_seq[f][j]['G']] += klets_seq[f][j]['W']
 
-        sum_union_w = sum([gset2weight[gset] for gset in union_f.keys()])
+        sum_union_w = sum([gset2weight[gset] for gset in union_f])
         for gset in sorted(union_f.keys()):
-            union_p.append(union_f[gset]/(len(klets_seq.keys())*float(range_end-range_start+1)))        
+            union_p.append(union_f[gset] / (len(klets_seq) * (range_end - range_start + 1)))
             union_p_w.append(gset2weight[gset] / sum_union_w)
 
 
-        for f in klets_seq.keys():
+        for f in klets_seq:
             #p1_dict, p2_dict = dict(), dict()            
             p1_dict = sum_f[f]
             p1_distrib = list()
             p1_distrib_w = list()
             sum_p1 = range_end - range_start + 1         
-            
-            sum_p1_w = sum([gset2weight[gset] if gset in sum_f[f] else 0 for gset in union_f.keys() ])
+
+            sum_p1_w = sum([gset2weight[gset] if gset in sum_f[f] else 0 for gset in union_f ])
             for gset in sorted(union_f.keys()):
                 if gset in sum_f[f]:
                     p1_distrib.append(sum_f[f][gset]/float(sum_p1))
@@ -137,7 +137,7 @@ def discrete_convergence(klets_seq, iter_num):
 
     for f in range(len(klets_seq)):            
         sum_f[f] = dict()
-        for j in klets_seq[f].keys():                               
+        for j in klets_seq[f]:
             sum_f[f][j] = klets_seq[f][j]['freq']
             
             if j not in union_f:
@@ -179,7 +179,7 @@ def discrete_convergence_check(klets_seq, s_length, conv_start):
     union_f = dict()        
     union_p = list()        
 
-    for f in klets_seq.keys():            
+    for f in klets_seq:
         sum_f[f] = dict()
         for j in range(len(klets_seq[f])):                               
             if klets_seq[f][j] not in sum_f[f]:
@@ -193,17 +193,17 @@ def discrete_convergence_check(klets_seq, s_length, conv_start):
         sum_num = len(klets_seq[f])
                     
     for gset in sorted(union_f.keys()):
-        union_p.append(union_f[gset]/(len(klets_seq.keys())*float(sum_num)))                    
+        union_p.append(union_f[gset] / (len(klets_seq) * sum_num))
 
-    for f in klets_seq.keys():
+    for f in klets_seq:
         
         p1_dict = sum_f[f]
         p1_distrib = list()            
-#        sum_p1 = range_end - range_start + 1                                 
+#        sum_p1 = range_end - range_start + 1
 
-        for gset in sorted(union_f.keys()):
+        for gset in sorted(union_f):
             if gset in sum_f[f]:
-                p1_distrib.append(sum_f[f][gset]/float(sum_num))            
+                p1_distrib.append(sum_f[f][gset] / sum_num)
             else:
                 p1_distrib.append(0)            
                     
@@ -230,5 +230,5 @@ def mean_confidence_interval(data, confidence=0.75):
     a = 1.0*np.array(data)
     n = len(a)
     m, se = np.mean(a), sem(a)
-    h = se * t._ppf((1+confidence)/2., n-1)
+    h = se * t._ppf((1+confidence)/2, n-1)
     return m, m-h, m+h

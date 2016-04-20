@@ -86,7 +86,7 @@ def load_precomputed_scores(infile, mutations, subt):
 def merge_results(convResults):
     total = dict()
     for results in convResults:
-        for key in results.keys():
+        for key in results:
             if key in total:
                 total[key]["freq"] += results[key]["freq"]
             else:
@@ -96,7 +96,7 @@ def merge_results(convResults):
 
 def merge_runs(resultsPre, resultsNew):
 
-    for key in resultsNew.keys():
+    for key in resultsNew:
         if key in resultsPre:
             resultsPre[key]["freq"] += resultsNew[key]["freq"]
         else:
