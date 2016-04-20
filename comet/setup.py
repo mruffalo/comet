@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 
 """Compiles the C and Fortran modules used by CoMEt."""
 
@@ -14,8 +15,10 @@ thisDir = os.path.dirname(os.path.realpath(__file__))
 def subprocessOutput(args):
     proc = subprocess.Popen(args, stdout=subprocess.PIPE)
     out, err = proc.communicate()
-    try: return out
-    except: print "Error: " + err
+    try:
+        return out
+    except Exception:
+        print("Error:", err)
 
 compile_args = ['-g', '-O0']
 
@@ -24,7 +27,7 @@ srcs = ['/src/c/utils/cephes/polevl.c','/src/c/utils/cephes/gamma.c',
         '/src/c/weights.c', '/src/c/mutation_data.c', '/src/c/cometmodule.c',
         '/src/c/comet_mcmc.c', '/src/c/comet_exhaustive.c']
 module = Extension('cComet', include_dirs=[numpy.get_include()],
-	sources = [ thisDir + s for s in srcs ], extra_compile_args = compile_args)
+    sources = [ thisDir + s for s in srcs ], extra_compile_args = compile_args)
 setup(name='CoMEt', version='1.0', description='C module for running CoMEt.',
       ext_modules=[module])
 
